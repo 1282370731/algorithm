@@ -1,0 +1,65 @@
+int getlength(int a) {
+    int sum = 1;
+    while (a / 10) {
+        sum++;
+        a = a / 10;
+    }
+    return sum;
+}
+char ** restoreIpAddresses(char * s, int* returnSize){
+
+    int length = strlen(s);
+    int size = 0;
+    if (length < 4 || s == NULL) {
+        *returnSize = size;
+        return NULL;
+    }
+    char **ret = malloc(1000);
+    char first[4];
+    char second[4];
+    char third[4];
+    char fourth[4];
+    char ans[16];
+    for (int a = 1; a < 4; a++) {
+        for (int b = 1; b < 4; b++) {
+            for (int c = 1; c < 4; c++) {
+                for (int d = 1; d < 4; d++) {
+                    if (a + b + c + d == length) {
+                        memset(first, 0, 4);
+                        memset(second, 0, 4);
+                        memset(third, 0, 4);
+                        memset(fourth, 0, 4);
+                        memcpy(first, s, a);
+                        memcpy(second, s + a, b);
+                        memcpy(third, s + a + b, c);
+                        memcpy(fourth, s + a + b + c, d);
+                        first[a] = '\0';
+                        second[b] = '\0';
+                        third[c] = '\0';
+                        fourth[d] = '\0';
+                        int ifirst = atoi(first);
+                        int isecond = atoi(second);
+                        int ithird = atoi(third);
+                        int ifourth = atoi(fourth);
+                        if ((ifirst <= 255) && (isecond <= 255) && (ithird <= 255) && (ifourth <= 255) && (getlength(ifirst) + getlength(isecond)
+                        + getlength(ithird) + getlength(ifourth)) == length) {
+                            memset(ans, 0, 16);
+                            strcpy(ans, first);
+                            strcat(ans, ".");
+                            strcat(ans, second);
+                            strcat(ans, ".");
+                            strcat(ans, third);
+                            strcat(ans, ".");
+                            strcat(ans, fourth);
+                            ret[size] = malloc(16);
+                            memcpy(ret[size], ans, 16);
+                            size++;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    *returnSize = size;
+    return ret;
+}

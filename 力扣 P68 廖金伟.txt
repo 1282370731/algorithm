@@ -1,0 +1,91 @@
+char* spaces(int a)
+{
+    char *space=(char*)malloc(sizeof(char)*(a+1));
+    int i=0;
+    for(i=0;i<a;i++)
+      space[i]=' ';
+    space[a]='\0';
+    return space;
+}
+char ** fullJustify(char ** words, int wordsSize, int maxWidth, int* returnSize){
+     int i=0,j=0;
+     int len=0;
+     int sum=0;
+     int begin=0;
+     int space=0;
+     char **ans=(char**)malloc(sizeof(char*)*wordsSize);
+     int k=0;
+     int avg=0;
+     int add=0;
+     int s=0;
+     for(i=0;i<wordsSize;i++)
+     {
+         if(len+strlen(words[i])<=maxWidth-sum)
+         {
+            len+=strlen(words[i]);
+            sum+=1;
+         }
+         else
+         {
+           
+            space=maxWidth-len;
+            if(sum>1)
+            {
+               avg=space/(sum-1);
+               add=space%(sum-1);
+               s=space-add;
+            }
+            else
+            {
+                 s=space;
+                 avg=space;
+                 add=0;
+            }
+            ans[k]=(char*)malloc(sizeof(char)*(maxWidth+1));
+            ans[k][0]='\0';
+            for(j=begin;j<i;j++)
+            {
+               
+                strcat(ans[k],words[j]);
+                if(s>0)
+                {
+                     strcat(ans[k],spaces(avg));
+                     s-=avg;
+                }
+                if(add>0)
+                {
+                      strcat(ans[k],spaces(1));
+                      add-=1;
+                }        
+            }
+            ans[k][maxWidth]='\0';
+            len=strlen(words[i]);
+            k+=1;
+            begin=i;
+            sum=1;
+         }
+     }
+     space=maxWidth-len;
+     ans[k]=(char*)malloc(sizeof(char)*(maxWidth+1));
+     ans[k][0]='\0';
+     for(j=begin;j<wordsSize;j++)
+     {
+               
+         strcat(ans[k],words[j]);
+         if(j==wordsSize-1)
+          {
+             strcat(ans[k],spaces(space));
+             space=0;
+           }
+           else if(space>0)
+           {
+              strcat(ans[k],spaces(1));
+              space-=1;
+           }
+                
+     }
+        ans[k][maxWidth]='\0';
+        k+=1;
+        *returnSize=k;
+     return ans;
+}

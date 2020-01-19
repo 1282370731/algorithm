@@ -1,0 +1,21 @@
+#define y 100000
+void fun(int* tmp, int num){
+    if(num > *tmp) {
+        *tmp = num;
+    }
+}
+int leastBricks(int** wall, int wallSize, int* wallColSize){
+    int x[y]={0};
+    int z = 0;
+    for(int i=0;i<wallSize;i++) {
+        for(int j=0;j<*(wallColSize+i) - 1;j++){
+            if(j!=0){
+                *(*(wall+i)+j)+=*(*(wall+i)+j-1);
+            }
+            int ans = *(x + *(*(wall+i)+j)) + 1;
+            fun(&z, ans);
+            *(x + *(*(wall+i)+j))=ans;
+        }
+    }
+    return (wallSize - z);
+}
