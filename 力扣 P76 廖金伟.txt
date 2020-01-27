@@ -1,0 +1,38 @@
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        int map[256] = {0};
+        bool hash[256] = {false};
+        int slen = s.length();
+        int tlen = t.length();
+        if(!slen || !tlen) return "";
+        int left,right,res,cnt,minleft;
+        minleft = cnt = left = right = 0;
+        res = slen + 1;
+        for(char ch:t)
+        {  
+            map[ch]++;
+            hash[ch] = true;
+        }
+        while(right < slen)
+        {
+            if(hash[s[right++]] && --map[s[right - 1]] >= 0) 
+                cnt++;
+            while(cnt == tlen)
+            {
+                if(right - left < res)
+                {
+                    res = right - left;
+                    minleft = left;
+                }
+                if(hash[s[left++]] && ++map[s[left - 1]] > 0 )
+                {
+                    cnt--;
+                }
+            }
+        }
+        if(res > slen) return "";
+        return s.substr(minleft, res);
+        
+    }
+};

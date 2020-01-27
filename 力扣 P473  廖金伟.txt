@@ -1,0 +1,23 @@
+class Solution {
+public:
+    bool makesquare(vector<int>& nums) {
+        if(nums.empty()||nums.size()<4) return false;
+        int sum = accumulate(nums.begin(),nums.end(),0);
+        if(sum % 4 != 0) return false;
+        vector<int> sums(4,0); 
+        sort(nums.rbegin(),nums.rend());
+        return dfs(nums,sums,0,sum/4);
+    }
+    bool dfs(vector<int>& nums,vector<int>& sums,int x,int y){
+        if(x >= nums.size()){
+            return sums[0] == y && sums[1] == y && sums[2] == y && sums[3] == y;
+        }
+        for(int i=0;i<4;++i){
+            if(sums[i]+nums[x] > y) continue;
+            sums[i] += nums[x]; 
+            if(dfs(nums,sums,x+1,y)) return true;
+            sums[i] -= nums[x];
+        }
+        return false;
+    }
+};
