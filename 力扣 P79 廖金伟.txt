@@ -1,0 +1,28 @@
+class Solution {
+public:
+    bool exist(vector<vector<char>>& board, string word) {
+        bool sum = false;
+        for (int i = 0; i < board.size(); i++) {
+            for (int j = 0; j < board[0].size(); j++) {
+                if (board[i][j] == word[0]) {
+                    sum = sum || dfs(board, i, j, word, 0);
+                    if (sum) return true;
+                }
+            }
+        }
+        return sum;
+    }
+
+    bool dfs(vector<vector<char>>& board, int i, int j, string& word, int p) {
+        if (p == word.size()) return true;
+        if ((i < 0) || (i >= board.size()) || 
+            (j < 0) || (j >= board[0].size())) 
+            return false;
+        if (board[i][j] != word[p]) return false;
+
+        board[i][j] = '*';
+        bool sum =  dfs(board, i - 1, j, word, p + 1) || dfs(board, i + 1, j, word, p + 1) || dfs(board, i, j - 1, word, p + 1) || dfs(board, i, j + 1, word, p + 1);
+        board[i][j] = word[p];
+        return sum;
+    }
+};

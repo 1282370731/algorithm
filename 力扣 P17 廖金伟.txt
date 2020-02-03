@@ -1,0 +1,55 @@
+char** letterCombinations(char* digits, int* returnSize) {
+    char *num[10] ={
+        "",
+        "",
+        "abc",
+        "def",
+        "ghi",
+        "jkl",
+        "mno",
+        "pqrs",
+        "tuv",
+        "wxyz"
+    };
+    int letter[10] = {
+        0,0,3,3,3,3,3,4,3,4
+    };
+    int strNum = 1;
+    char **Result;
+    int temp[8] = {0};
+    int n = 0,i,j,k;
+    int den = 0,col = 0;
+    char digitsTemp = 0;
+    while(*digits != '\0'){
+        temp[n] = *digits - '0';
+        strNum *= letter[temp[n++]];
+        digits++;
+    }
+    
+    if(strNum == 1){
+        * returnSize = 0;
+        return NULL;
+    }
+    
+    *returnSize = strNum;
+    Result = malloc(sizeof(char *) * strNum);
+    
+    for(i = 0; i < strNum; i++){
+        Result[i] = malloc(sizeof(char)*(n+1));
+    }
+    den = strNum;
+    for(i = 0;i <= n; i++){
+        if(letter[temp[i]] > 0)
+            den /= letter[temp[i]];
+        for(j = 0; j < strNum;j++){
+            if(letter[temp[i]] > 0)
+                k = j / den % letter[temp[i]];
+            if(i == n){
+                Result[j][col] = '\0';
+            }
+            else Result[j][col] = num[temp[i]][k];
+        }  
+        col++;
+    }        
+    return Result;
+}

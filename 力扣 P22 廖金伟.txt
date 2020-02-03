@@ -1,0 +1,25 @@
+class Solution {
+	public:
+	void add(vector<string>&res,string kh,int left,int right,int n)
+	{
+    	if(kh.size()==2*n)
+   	 	{
+        	res.push_back(kh);
+        	return ;
+    	}
+    	if(left<n)
+    	{
+        	add(res,kh+'(',left+1,right,n);
+    	}
+    	if(right<left)
+    	{
+        	add(res,kh+')',left,right+1,n);
+    	}
+    	return ;
+	}
+	vector<string> generateParenthesis(int n) {
+    	vector<string> res;
+    	add(res,"",0,0,n);
+    	return res;
+	}
+};
