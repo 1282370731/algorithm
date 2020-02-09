@@ -1,0 +1,57 @@
+class Solution {
+public:
+    struct TrieNode{
+        TrieNode* child[26];
+        string str;
+        TrieNode(): str(""){
+            for(int i = 0; i < 26; i++)
+                child[i] = NULL;
+        }
+    };
+    
+    struct Trie {
+        TrieNode *root;
+        Trie() : root(new TrieNode()) {}
+        void insert(string s) {
+            TrieNode *p = root;
+            for (auto &a : s) {
+                int i = a - 'a';
+                if (!p->child[i]) p->child[i] = new TrieNode();
+                p = p->child[i];
+            }
+            p->str = s;
+        }
+    };
+    
+    vector<string> findWords(vector<vector<char>>& board, vector<string>& words) {
+        vector<string> ans;
+        if (words.empty() || board.empty() || board[0].empty()) return ans;
+        Trie T;
+        for (auto &a : words) T.insert(a);
+        int m = board.size();
+        int n = board[0].size();
+        vector<vector<bool>> point(m, vector<bool>(n, false));
+        for(int i = 0; i < m; i++)
+            for(int j = 0; j < n; j++)
+                if(T.root->child[board[i][j] - 'a'])
+                    DFS(T.root->child[board[i][j] - 'a'], i, j, board, point, ans);
+        return ans;
+    }
+    
+    void DFS(TrieNode* cur, int row, int col, vector<vector<char>>& board, vector<vector<bool>>& point, vector<string>& ans){
+        if(!cur->str.empty()){
+            ans.push_back(cur->str);
+            cur->str.clear();
+        }
+        point[row][col] = true;
+        if(col-1 >= 0 && row >= 0 && col-1 < board[0].size() && row < board.size() && cur->child[board[row][col-1] - 'a'] && point[row][col-1] == false)
+            DFS(cur->child[board[row][col-1] - 'a'], row, col-1, board, point, ans);
+        if(col >= 0 && row-1 >= 0 && col < board[0].size() && row-1 < board.size() && cur->child[board[row-1][col] - 'a'] && point[row-1][col] == false)
+            DFS(cur->child[board[row-1][col] - 'a'], row-1, col, board, point, ans);
+        if(col+1 >= 0 && row >= 0 && col+1 < board[0].size() && row < board.size() && cur->child[board[row][col+1] - 'a'] && point[row][col+1] == false) 
+            DFS(cur->child[board[row][col+1] - 'a'], row, col+1, board, point, ans);
+        if(col >= 0 && row+1 >= 0 && col < board[0].size() && row+1 < board.size() && cur->child[board[row+1][col] - 'a'] && point[row+1][col] == false)
+            DFS(cur->child[board[row+1][col] - 'a'], row+1, col, board, point, ans);
+        point[row][col] = false;
+    }
+};
