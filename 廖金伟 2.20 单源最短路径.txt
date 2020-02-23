@@ -1,0 +1,57 @@
+#include<iostream>
+#include<queue> 
+#include<algorithm>
+#include<cstring>
+using namespace std;
+int n,m,s,first[10001],cnt,dist[10001],pp;
+struct kkk{
+    int len = 0,end = 0,next = 0; 
+}g[500001];
+queue<int > l;
+bool b[10001]; 
+void ad(int q,int w,int e) { 
+    ++cnt;
+    g[cnt].end = w;
+    g[cnt].len = e;
+    g[cnt].next = first[q];
+    first[q] = cnt;
+}
+void spfa(int s){
+    dist[s] = 0; 
+    l.push(s);
+    b[s] = true;
+    while(!l.empty()) {
+        int oo = l.front();
+        l.pop();
+        b[oo] = false;
+        for(int i = first[oo]; i != 0;i = g[i].next) {
+            ++pp;
+            int end = g[i].end;
+            int len = g[i].len;
+            int newd = dist[oo] + len;
+            if(newd < dist[end]) { 
+                dist[end] = newd;
+                if(!b[end]) {
+                    l.push(end);
+                    b[end] = true;
+                }
+            }
+        }
+    }
+}
+int main(){
+    ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    cin >> n >> m >> s;
+    for(int i = 1;i <= n;i++) {
+        dist[i] = 2147483647; 
+    }
+    for(int i = 1;i <= m; i++) {
+        int u,k,e;
+        cin >> u >> k >> e;
+        ad(u,k,e);
+    }
+    spfa(s);
+    for(int i = 1;i <= n;i++) 
+        cout << dist[i] <<" ";
+    return 0;    
+}
