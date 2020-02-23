@@ -1,0 +1,51 @@
+#include<bits/stdc++.h>
+#include<algorithm>
+#include<cmath>
+#include<stdlib.h>
+using namespace std;
+const int dx[5]={-1,0,1,0};
+const int dy[5]={0,1,0,-1};
+char a[50][50];
+bool tmp[110100000];
+string s;
+int ans=0;
+void dfs(int x,int y,int b,string s)
+{
+	if (b>5)
+	{
+		int n=atoi(s.c_str());
+		if (tmp[n]==false)
+		{
+			tmp[n]=true;
+			ans++;
+		}
+	}
+	else
+	{
+		for (int i=0;i<4;i++)
+		{
+			int xx=x+dx[i],yy=y+dy[i];
+			if (xx>5||yy>5||xx<=0||yy<=0)
+				continue;
+			if (a[xx][yy]==' ')
+				continue;
+			dfs(xx,yy,b+1,s+a[xx][yy]);
+		}
+	}
+}
+int main()
+{
+	memset(tmp,false,sizeof(tmp));
+	for (int i=1;i<=5;i++)
+		for (int j=1;j<=5;j++)
+			cin>>a[i][j];
+	for (int i=1;i<=5;i++)
+		for (int j=1;j<=5;j++)
+		{
+			s=a[i][j];
+			dfs(i,j,1,s);
+			s=" ";
+		}
+	cout<<ans<<endl;
+	return 0;
+}

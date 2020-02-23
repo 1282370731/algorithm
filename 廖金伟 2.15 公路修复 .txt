@@ -1,0 +1,39 @@
+#include<cstdio>
+#include<iostream>
+#include<algorithm>
+using namespace std;
+int f[10005], ans;
+int num;
+struct node{
+    int x, y, l;
+} a[100005];
+int cmp(node i, node j){
+    return i.l < j.l;
+}
+int find(int x){
+    if(f[x] != x)
+        f[x] = find(f[x]);
+    return f[x];
+}
+int main(){
+    int n, m;
+    scanf("%d%d", &n, &m);
+    for(int i = 1; i <= n; i++)
+        f[i] = i;
+    for(int i = 1; i <= m; i++){
+        scanf("%d%d%d", &a[i].x, &a[i].y, &a[i].l);
+    }
+    sort(a+1, a+m+1, cmp);
+    for(int i = 1; i <= m; i++){
+        int r1 = find(a[i].x);
+        int r2 = find(a[i].y);
+        if(r1 != r2){
+            f[r1] = r2;
+            num++;
+            ans = max(ans, a[i].l);
+        }
+    }
+    if(num >= n - 1) printf("%d", ans);
+    else printf("-1");
+    return 0;
+}

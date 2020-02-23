@@ -1,0 +1,57 @@
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+
+int main()
+{
+  int n,i,j,k;
+  char web[120][80];
+  char com[10];
+  char tem[80];
+  int back[120];
+  strcpy(web[0],"http://www.acm.org/");
+  scanf("%d",&n);
+  while(n--)
+  {
+     memset(back,0,sizeof(back));
+     back[0]=0;j=0;i=1;
+     while(scanf("%s",com)!=EOF&&strcmp(com,"QUIT"))
+     {
+       if(!strcmp(com,"VISIT"))
+       {
+         scanf("%s",tem);
+         j++;
+         strcpy(web[i],tem);
+         printf("%s\n",tem);
+         back[j]=i;
+         back[j+1]=-1;
+         i++;
+       } 
+       else if(!strcmp(com,"BACK"))
+       {
+         if(j-1<0)
+         {
+           printf("Ignored\n");
+         }
+         else
+         {
+           printf("%s\n",web[back[--j]]);
+         }
+       }
+       else if(!strcmp(com,"FORWARD"))
+       {
+         if(back[j+1]==-1)
+         {
+           printf("Ignored\n");
+         }
+         else
+         {
+           printf("%s\n",web[back[++j]]);
+         }
+       }
+     }
+     if(n)
+       printf("\n");
+  }
+  return 0;
+}

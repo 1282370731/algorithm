@@ -1,0 +1,85 @@
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+using namespace std;
+int main()
+{
+    int a[30005];
+    char chuan[200000];
+    char mb[200000];
+    char b[10];
+    int c,d,tmax,zc,kt;
+    a[1]=1;
+    while(scanf("%d%d",&d,&c)!=EOF)
+    {
+        int i=1,j=1,k=1;
+        chuan[0]='1';
+        for(int pp=2; pp<=d; pp++)
+        {
+
+            if(a[i]*2+1<a[j]*4+5)
+            {
+                a[pp]=a[i]*2+1;
+                kt=0;
+                zc=a[pp];
+                while(zc>0)
+                {
+                    b[kt]=zc%10+48;
+                    zc/=10;
+                    kt++;
+                }
+                kt--;
+                while(kt>=0)
+                {
+                    chuan[k++]=b[kt];
+                    kt--;
+                }
+                i++;
+            }
+            else
+            {
+                a[pp]=a[j]*4+5;
+                kt=0;
+                zc=a[pp];
+                while(zc>0)
+                {
+                    b[kt]=zc%10+48;
+                    zc/=10;
+                    kt++;
+                }
+                kt--;
+                while(kt>=0)
+                {
+                    chuan[k++]=b[kt];
+                    kt--;
+                }
+                j++;
+            }
+        }
+        int len=strlen(chuan);
+        kt=0;
+        for(i=0; i<len-c; i++)
+        {
+            tmax='0'-1;
+            for(j=kt; j<=c+i; j++)
+            {
+                if(chuan[j]=='9')
+                {
+                    kt=j+1;
+                    mb[i]=chuan[j];
+                    break;
+                }
+                if(chuan[j]>tmax)
+                {
+                    tmax=chuan[j];
+                    kt=j+1;
+                    mb[i]=chuan[j];
+                }
+            }
+        }
+        mb[i]='\0';
+        puts(chuan);
+        puts(mb);
+    }
+    return 0;
+}

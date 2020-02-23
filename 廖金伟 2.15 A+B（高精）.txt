@@ -1,0 +1,21 @@
+#include <bits/stdc++.h>
+using namespace std;
+string a,b,c;
+int x,y;
+int main(){
+    cin>>a>>b;
+    while(a.length()>b.length())
+        b="0"+b;
+    while(a.length()<b.length())
+        a="0"+a;
+    for(int i=a.length()-1;i>=0;i--){
+        x=a[i]-'0'+b[i]-'0'+y;
+        y=x/10;
+        x%=10;
+        c=char(x+'0')+c;
+    }
+    if(y!=0)
+        c=char(y+'0')+c;
+    cout<<c;
+    return 0;
+}
